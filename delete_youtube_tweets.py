@@ -1,6 +1,6 @@
 # Based upon https://gist.github.com/yanofsky/5436496
 
-import sys
+import sys, json
 import tweepy #https://github.com/tweepy/tweepy
 
 
@@ -9,11 +9,15 @@ class DeleteYoutubeTweets:
     def __init__(self):
         self.name = self
 
+        with open("twitter_credentials.json") as json_file:
+            self.twitter_credentials = json.load(json_file)
+            print(self.twitter_credentials)
+
         # Twitter API credentials
-        self.consumer_key = ""
-        self.consumer_secret = ""
-        self.access_key = ""
-        self.access_secret = ""
+        self.consumer_key = self.twitter_credentials['consumer_key']
+        self.consumer_secret = self.twitter_credentials['consumer_secret']
+        self.access_key = self.twitter_credentials['access_key']
+        self.access_secret = self.twitter_credentials['access_secret']
 
     def get_tweets(self, screen_name):
         print "Now attempting to retrieve tweets for " + screen_name
@@ -34,12 +38,14 @@ class DeleteYoutubeTweets:
 
         print list_of_tweets
 
-    if __name__ == '__main__':
-        try:
-            user_input = sys.argv[1]
+if __name__ == '__main__':
+    try:
+        user_input = sys.argv[1]
 
-            # Pass in the username of the account
-            get_tweets(user_input)
+        delete_youtube_tweets = DeleteYoutubeTweets()
 
-        except IndexError:
-            print "Please enter twitter username as an argument"
+        # Pass in the username of the account
+        # delete_youtube_tweets.get_tweets(user_input)
+
+    except IndexError:
+        print "Please enter twitter username as an argument"
